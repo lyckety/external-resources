@@ -17,6 +17,9 @@ def ip_prefixes_to_address_list(ip_prefixes: List[str], list_name: str, comment:
     :return: script
     :rtype: str
     """
+    if len(ip_prefixes) == 0:
+        return ""
+
     script = "/ip firewall address-list\n"
 
     for ip in ip_prefixes:
@@ -36,11 +39,14 @@ def ips_for_domain_to_address_list(ips_info: Dict[str, List[str]], list_name: st
     :return: script
     :rtype: str
     """
+    if len(ips_info) == 0:
+        return ""
+
     script = "/ip firewall address-list\n"
 
     for ip, domains in ips_info.items():
-        comment_suffix: str = ', '.join(domains)
-        comment = f'{comment_prefix}: {comment_suffix}'
+        comment_suffix: str = ','.join(domains)
+        comment = f'{comment_prefix}:{comment_suffix}'
 
         script += f"add list={list_name} address={ip} comment={comment}\n"
 

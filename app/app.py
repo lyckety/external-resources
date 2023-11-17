@@ -52,7 +52,8 @@ class App(object):
         def get_ips_from_domain_names():
             return jsonify(
                 ips = resolver.resolve_ips(
-                    *request.args.getlist('domain_name')
+                    *request.args.getlist('domain_name'),
+                    ip_type=request.args.get('ip_type')
                 )
             )
 
@@ -61,6 +62,7 @@ class App(object):
             script = mikrotik.ips_for_domain_to_address_list(
                 resolver.resolve_ips(
                     *request.args.getlist('domain_name'),
+                    ip_type=request.args.get('ip_type')
                 ),
                 request.args.get('list_name'),
                 request.args.get('comment_prefix')
