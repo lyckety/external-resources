@@ -9,3 +9,4 @@ services:
     environment:
       - DEBUG_FLASK=True
       - LOG_LEVEL=debug
+      - DEFAULT_NAMESERVERS=8.8.8.8,77.88.8.8

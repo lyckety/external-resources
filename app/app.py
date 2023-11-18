@@ -1,7 +1,7 @@
 """
 Module implements REST API
 """
-
+from typing import List
 from flask import Flask, request, Response, jsonify
 
 from config import Config
@@ -50,18 +50,30 @@ class App(object):
 
         @self.__web.route('/api/v1/resolver/nslookup')
         def get_ips_from_domain_names():
+            used_nameservers: List[str] = self.__cfg.default_nameservers
+
+            if len(request.args.getlist('nameserver')) > 0:
+                used_nameservers = request.args.getlist('nameserver')
+
             return jsonify(
                 ips = resolver.resolve_ips(
-                    *request.args.getlist('domain_name'),
+                    used_nameservers,
+                    request.args.getlist('domain_name'),
                     ip_type=request.args.get('ip_type')
                 )
             )
 
         @self.__web.route('/api/v1/resolver/nslookup-as-mikrotik-list')
         def get_ips_from_domain_names_as_mikrotik_list():
+            used_nameservers: List[str] = self.__cfg.default_nameservers
+
+            if len(request.args.getlist('nameserver')) > 0:
+                used_nameservers = request.args.getlist('nameserver')
+
             script = mikrotik.ips_for_domain_to_address_list(
                 resolver.resolve_ips(
-                    *request.args.getlist('domain_name'),
+                    used_nameservers,
+                    request.args.getlist('domain_name'),
                     ip_type=request.args.get('ip_type')
                 ),
                 request.args.get('list_name'),
