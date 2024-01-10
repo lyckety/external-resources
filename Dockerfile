@@ -5,14 +5,16 @@ WORKDIR /opt/app
 COPY . .
 
 RUN apk update && \
-    apk add \
+    apk add --no-cache \
         bash \
         binutils \
         openssl \
         curl  && \
     update-ca-certificates && \
     pip3 install --upgrade pip && \
-    pip3 install -r requirments.txt
+    pip3 install -r requirments.txt && \
+    rm requirments.txt && \
+    mv ./src/* .
 
 ENTRYPOINT ["/usr/local/bin/python" ]
 
