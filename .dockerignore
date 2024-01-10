@@ -1,9 +1,3 @@
 **
-!main.py
-!app
-!bgp
-!mikrotik
-!config
-!logger
-!resolver
+!src/*
 !requirments.txt
